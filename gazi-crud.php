@@ -34,6 +34,7 @@ class Gazi_crud{
         add_action('admin_menu', [$this, 'gazi_admin_menu']);
         add_action('admin_enqueue_scripts', [$this, 'gazi_enqueue_file']);
         register_activation_hook(__FILE__, [$this, 'create_database_tables']);
+        add_action('admin_init', [$this, 'handle_form_submission']);
 
     }
 
@@ -98,5 +99,28 @@ class Gazi_crud{
     function gazi_add_new_data(){
         include_once (plugin_dir_path(__FILE__) . 'pages/add-new.php');
     }
+
+    // Handle form submission
+    function handle_form_submission() {
+        if ( isset( $_POST['submit'] ) && isset( $_POST['my_crud_nonce'] ) && wp_verify_nonce( $_POST['my_crud_nonce'], 'my_crud_action' ) ) {
+            global $wpdb;
+            $table_name = $wpdb->prefix . 'gazi_custom_data';
+            $name = sanitize_text_field( $_POST['name'] );
+            $email = sanitize_email( $_POST['email'] );
+
+            // Insert data into the database
+            $wpdb->insert(
+                $table_name,
+                array(
+                    'name' => $name,
+                    'email' => $email,
+                )
+            );
+
+            // Redirect after form submission
+            wp_redirect( admin_url( 'admin.php?page=gazi-crud' ) );
+            exit;
+        }
+}
 }
 new Gazi_crud();
