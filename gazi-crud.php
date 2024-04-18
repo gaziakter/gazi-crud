@@ -26,6 +26,7 @@ class Gazi_crud{
     /** Init hook function */
     function gazi_init(){
         add_action('admin_menu', [$this, 'gazi_admin_menu']);
+        add_action('admin_enqueue_scripts', [$this, 'gazi_enqueue_file']);
     }
 
     /** Add Admin Menu */
@@ -41,10 +42,19 @@ class Gazi_crud{
         );
     }
 
+    /** Enqueue files */
+    function gazi_enqueue_file($hook){
+        if ($hook == 'toplevel_page_gazi-crud') {
+            wp_enqueue_script('gazi-tailwind', '//cdn.tailwindcss.com', [], '1.0', [
+                'in_footer' => true,
+                'strategy' => 'defer'
+            ]);
+        }
+    }
 
     /** Main content function */
     function main_content_section(){
-        echo 'This is main content section';
+        
     }
 }
 new Gazi_crud();
