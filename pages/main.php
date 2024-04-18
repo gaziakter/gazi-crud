@@ -3,8 +3,23 @@
 /** Main content function */
 global $wpdb;
 
+        // Check if delete action is triggered
+        if ( isset( $_GET['action'] ) && $_GET['action'] === 'delete' ) {
+            // Check if ID is provided
+            if ( isset( $_GET['id'] ) ) {
+                $id = intval( $_GET['id'] );
+                // Delete the entry from the database
+                $wpdb->delete( $this->table_name, [ 'id' => $id ] );
+                // Redirect back to the main content page
+                wp_redirect( admin_url( 'admin.php?page=gazi-crud' ) );
+                exit;
+            }
+        }
+
 // Retrieve data from the database
 $data = $wpdb->get_results("SELECT * FROM {$this->table_name}");
+
+$dispay_alert = 'Are you sure you want to delete this item?';
 
 // Display the data in a table
 ?>
@@ -34,7 +49,7 @@ $data = $wpdb->get_results("SELECT * FROM {$this->table_name}");
                             <td class="px-6 py-4"><?php echo $row->email; ?></td>
                             <td class="px-6 py-4">
                             <a href="<?php echo esc_url( admin_url( 'admin.php?page=gazi-edit-data&id=' . $row->id ) ); ?>" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a> |
-                                        <a href="<?php echo esc_url( admin_url( 'admin.php?page=gazi-edit-data&id=' . $row->id ) ); ?>" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
+                            <a href="<?php echo esc_url( admin_url( 'admin.php?page=gazi-crud&action=delete&id=' . $row->id ) ); ?>" class="font-medium text-red-600 dark:text-red-500 hover:underline" onclick="return confirm('<?php echo esc_js( $dispay_alert ); ?>');">Delete</a>
                             </td>
                         </tr>
                     <?php
