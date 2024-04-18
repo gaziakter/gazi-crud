@@ -54,7 +54,7 @@ class Gazi_crud{
 
     /** Main content function */
     function main_content_section(){
-        
+        include_once (plugin_dir_path(__FILE__) . 'pages/main.php');
     }
 }
 new Gazi_crud();
