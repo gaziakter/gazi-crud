@@ -1,7 +1,8 @@
 <div class="wrapper p-20">
     <div class="gazi-header">
-        <h2 class="float-left content-start text-4xl py-4 font-extrabold dark:text-white">Gazi Crud</h2>
-        <button type="button" class="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-5 mt-5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add New Data</button>
+        <h2 class="content-start text-4xl py-4 font-extrabold dark:text-white">Gazi Crud</h2>
+        <hr class="mb-10">
+        <a href="<?php  echo esc_url( admin_url( 'admin.php?page=gazi-add-new-data' ));?>" class="inline-block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-5 mt-5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add New Data</a>
     </div>
 
     <div class="relative shadow-md sm:rounded-lg">

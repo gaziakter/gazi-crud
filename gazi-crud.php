@@ -39,6 +39,8 @@ class Gazi_crud{
 
     /** Add Admin Menu */
     function gazi_admin_menu(){
+
+        /** Add admin main menu function */
         add_menu_page(
             'Gazi Crud',
             'Gazi Crud',
@@ -47,6 +49,16 @@ class Gazi_crud{
              [$this, 'main_content_section'],
              'dashicons-superhero',
              '25'
+        );
+
+        /**add three submenu pages */
+        add_submenu_page(
+            'gazi-crud',
+            'Add New Data',
+            'Add New Data',
+            'manage_options',
+            'gazi-add-new-data',
+            [$this, 'gazi_add_new_data']
         );
     }
 
@@ -69,7 +81,7 @@ class Gazi_crud{
 
     /** Enqueue files */
     function gazi_enqueue_file($hook){
-        if ($hook == 'toplevel_page_gazi-crud') {
+        if ($hook == 'toplevel_page_gazi-crud' || 'toplevel_page_gazi_add_new_data') {
             wp_enqueue_script('gazi-tailwind', '//cdn.tailwindcss.com', [], '1.0', [
                 'in_footer' => true,
                 'strategy' => 'defer'
@@ -80,6 +92,11 @@ class Gazi_crud{
     /** Main content function */
     function main_content_section(){
         include_once (plugin_dir_path(__FILE__) . 'pages/main.php');
+    }
+
+    /** Main gazi_add_new_data function */
+    function gazi_add_new_data(){
+        include_once (plugin_dir_path(__FILE__) . 'pages/add-new.php');
     }
 }
 new Gazi_crud();
