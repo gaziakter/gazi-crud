@@ -17,3 +17,34 @@
  if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
+
+class Gazi_crud{
+    function __construct(){
+        add_action( 'init', [$this, 'gazi_init'] );
+    }
+
+    /** Init hook function */
+    function gazi_init(){
+        add_action('admin_menu', [$this, 'gazi_admin_menu']);
+    }
+
+    /** Add Admin Menu */
+    function gazi_admin_menu(){
+        add_menu_page(
+            'Gazi Crud',
+            'Gazi Crud',
+            'manage_options',
+            'gazi-crud',
+             [$this, 'main_content_section'],
+             'dashicons-superhero',
+             '25'
+        );
+    }
+
+
+    /** Main content function */
+    function main_content_section(){
+        echo 'This is main content section';
+    }
+}
+new Gazi_crud();
