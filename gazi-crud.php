@@ -18,10 +18,10 @@
     exit; // Exit if accessed directly
 }
 
-class Gazi_crud{
-
+class Gazi_crud {
     private $table_name;
-    function __construct(){
+
+    function __construct() {
         global $wpdb;
         $this->table_name = $wpdb->prefix . 'gazi_custom_data';
         register_activation_hook( __FILE__, array( $this, 'gazi_create_table' ) );
@@ -30,17 +30,14 @@ class Gazi_crud{
     }
 
     /** Init hook function */
-    function gazi_init(){
+    function gazi_init() {
         add_action('admin_menu', [$this, 'gazi_admin_menu']);
         add_action('admin_enqueue_scripts', [$this, 'gazi_enqueue_file']);
-        register_activation_hook(__FILE__, [$this, 'create_database_tables']);
-        add_action('admin_init', [$this, 'handle_form_submission']);
-
+        add_action('admin_post_gazi_add_new_data', [$this, 'handle_form_submission']);
     }
 
     /** Add Admin Menu */
-    function gazi_admin_menu(){
-
+    function gazi_admin_menu() {
         /** Add admin main menu function */
         add_menu_page(
             'Gazi Crud',
@@ -64,7 +61,7 @@ class Gazi_crud{
     }
 
     /** Create a custom data table */
-    function gazi_create_table(){
+    function gazi_create_table() {
         global $wpdb;
 
         $charset_collate = $wpdb->get_charset_collate();
@@ -81,8 +78,8 @@ class Gazi_crud{
     }
 
     /** Enqueue files */
-    function gazi_enqueue_file($hook){
-        if ($hook == 'toplevel_page_gazi-crud' || 'toplevel_page_gazi_add_new_data') {
+    function gazi_enqueue_file($hook) {
+        if ($hook == 'toplevel_page_gazi-crud' || 'toplevel_page_gazi-add-new-data') {
             wp_enqueue_script('gazi-tailwind', '//cdn.tailwindcss.com', [], '1.0', [
                 'in_footer' => true,
                 'strategy' => 'defer'
@@ -91,26 +88,28 @@ class Gazi_crud{
     }
 
     /** Main content function */
-    function main_content_section(){
+    function main_content_section() {
+        // Your main content section code here
         include_once (plugin_dir_path(__FILE__) . 'pages/main.php');
+
     }
 
     /** Main gazi_add_new_data function */
-    function gazi_add_new_data(){
+    function gazi_add_new_data() {
         include_once (plugin_dir_path(__FILE__) . 'pages/add-new.php');
+
     }
 
     // Handle form submission
     function handle_form_submission() {
-        if ( isset( $_POST['submit'] ) && isset( $_POST['my_crud_nonce'] ) && wp_verify_nonce( $_POST['my_crud_nonce'], 'my_crud_action' ) ) {
+        if ( isset( $_POST['gazi_add_new_data_nonce'] ) && wp_verify_nonce( $_POST['gazi_add_new_data_nonce'], 'gazi_add_new_data' ) ) {
             global $wpdb;
-            $table_name = $wpdb->prefix . 'gazi_custom_data';
             $name = sanitize_text_field( $_POST['name'] );
             $email = sanitize_email( $_POST['email'] );
 
             // Insert data into the database
             $wpdb->insert(
-                $table_name,
+                $this->table_name,
                 array(
                     'name' => $name,
                     'email' => $email,
@@ -121,6 +120,7 @@ class Gazi_crud{
             wp_redirect( admin_url( 'admin.php?page=gazi-crud' ) );
             exit;
         }
+    }
 }
-}
+
 new Gazi_crud();
