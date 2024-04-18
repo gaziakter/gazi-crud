@@ -34,6 +34,7 @@ class Gazi_crud {
         add_action('admin_menu', [$this, 'gazi_admin_menu']);
         add_action('admin_enqueue_scripts', [$this, 'gazi_enqueue_file']);
         add_action('admin_post_gazi_add_new_data', [$this, 'handle_form_submission']);
+        add_action('admin_post_gazi_edit_data', [$this, 'edit_form_submission']);
     }
 
     /** Add Admin Menu */
@@ -57,6 +58,17 @@ class Gazi_crud {
             'manage_options',
             'gazi-add-new-data',
             [$this, 'gazi_add_new_data']
+        );
+
+        
+        // Add submenu page for "Edit Data"
+        add_submenu_page(
+            'gazi-crud',
+            'Edit Data',
+            'Edit Data',
+            'manage_options',
+            'gazi-edit-data',
+            [ $this, 'gazi_edit_data' ]
         );
     }
 
@@ -121,6 +133,35 @@ class Gazi_crud {
             exit;
         }
     }
+
+    // Edit data sub menu
+    function gazi_edit_data(){
+        include_once (plugin_dir_path(__FILE__) . 'pages/edit.php');
+    }
+
+        // Handle form submission
+        function edit_form_submission() {
+            if ( isset( $_POST['gazi_edit_data_nonce'] ) && wp_verify_nonce( $_POST['gazi_edit_data_nonce'], 'gazi_edit_data' ) ) {
+                global $wpdb;
+                $id = isset( $_POST['id'] ) ? intval( $_POST['id'] ) : 0;
+                $name = sanitize_text_field( $_POST['name'] );
+                $email = sanitize_email( $_POST['email'] );
+    
+                // Update data in the database
+                $wpdb->update(
+                    $this->table_name,
+                    array(
+                        'name' => $name,
+                        'email' => $email,
+                    ),
+                    array( 'id' => $id )
+                );
+    
+                // Redirect after form submission
+                wp_redirect( admin_url( 'admin.php?page=gazi-crud' ) );
+                exit;
+            }
+        }
 }
 
 new Gazi_crud();
