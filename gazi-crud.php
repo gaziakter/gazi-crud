@@ -19,7 +19,13 @@
 }
 
 class Gazi_crud{
+
+    private $table_name;
     function __construct(){
+        global $wpdb;
+        $this->table_name = $wpdb->prefix . 'gazi_custom_data';
+        register_activation_hook( __FILE__, array( $this, 'gazi_create_table' ) );
+        
         add_action( 'init', [$this, 'gazi_init'] );
     }
 
@@ -27,6 +33,8 @@ class Gazi_crud{
     function gazi_init(){
         add_action('admin_menu', [$this, 'gazi_admin_menu']);
         add_action('admin_enqueue_scripts', [$this, 'gazi_enqueue_file']);
+        register_activation_hook(__FILE__, [$this, 'create_database_tables']);
+
     }
 
     /** Add Admin Menu */
@@ -40,6 +48,23 @@ class Gazi_crud{
              'dashicons-superhero',
              '25'
         );
+    }
+
+    /** Create a custom data table */
+    function gazi_create_table(){
+        global $wpdb;
+
+        $charset_collate = $wpdb->get_charset_collate();
+
+        $sql = "CREATE TABLE IF NOT EXISTS {$this->table_name} (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            name varchar(100) NOT NULL,
+            email varchar(100) NOT NULL,
+            PRIMARY KEY (id)
+        ) $charset_collate;";
+
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        dbDelta( $sql );
     }
 
     /** Enqueue files */
