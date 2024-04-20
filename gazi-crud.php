@@ -41,8 +41,8 @@ class Gazi_crud {
     function gazi_admin_menu() {
         /** Add admin main menu function */
         add_menu_page(
-            'Gazi Crud',
-            'Gazi Crud',
+            __( 'Gazi Crud', ' gazi-crud' ),
+            __( 'Gazi Crud', ' gazi-crud' ),
             'manage_options',
             'gazi-crud',
              [$this, 'main_content_section'],
@@ -53,8 +53,8 @@ class Gazi_crud {
         /**add three submenu pages */
         add_submenu_page(
             'gazi-crud',
-            'Add New Data',
-            'Add New Data',
+            __( 'Add New Data', ' gazi-crud' ),
+            __( 'Add New Data', ' gazi-crud' ),
             'manage_options',
             'gazi-add-new-data',
             [$this, 'gazi_add_new_data']
@@ -64,8 +64,8 @@ class Gazi_crud {
         // Add submenu page for "Edit Data"
         add_submenu_page(
             'gazi-crud',
-            'Edit Data',
-            'Edit Data',
+            __( 'Edit Data', ' gazi-crud' ),
+            __( 'Edit Data', ' gazi-crud' ),
             'manage_options',
             'gazi-edit-data',
             [ $this, 'gazi_edit_data' ]
