@@ -42,7 +42,7 @@ $dispay_alert = 'Are you sure you want to delete this item?';
             </thead>
             <tbody>
                 <?php
-              
+                
                     foreach ($data as $row) {
                 ?>
                         <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
