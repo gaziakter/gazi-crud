@@ -11,8 +11,8 @@ global $wpdb;
                 // Delete the entry from the database
                 $wpdb->delete( $this->table_name, [ 'id' => $id ] );
                 // Redirect back to the main content page
-                wp_redirect( admin_url( 'admin.php?page=gazi-crud' ) );
-                exit;
+                //wp_redirect( admin_url( 'admin.php?page=gazi-crud' ) );
+                //exit;
             }
         }
 
@@ -28,6 +28,7 @@ $dispay_alert = 'Are you sure you want to delete this item?';
         <h2 class="text-4xl py-4 font-extrabold dark:text-white">Gazi Crud - All Data</h2>
         <hr class="mb-10">
     </div>
+    <?php  if ($data) { ?>
     <div class="relative shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -40,7 +41,7 @@ $dispay_alert = 'Are you sure you want to delete this item?';
             </thead>
             <tbody>
                 <?php
-                if ($data) {
+              
                     foreach ($data as $row) {
                 ?>
                         <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
@@ -54,15 +55,16 @@ $dispay_alert = 'Are you sure you want to delete this item?';
                         </tr>
                     <?php
                     }
-                } else {
-                    ?>
-                    <tr>
-                        <td colspan="4" class="px-6 py-4">No data found.</td>
-                    </tr>
-                <?php
-                }
+ 
                 ?>
             </tbody>
         </table>
     </div>
+    <?php                } else {
+                    ?>
+                    <tr>
+                        <td colspan="4" class="px-6 py-4"><h2>No data found.</h2></td>
+                    </tr>
+                <?php
+                } ?>
 </div>
