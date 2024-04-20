@@ -64,8 +64,8 @@ class Gazi_crud {
         // Add submenu page for "Edit Data"
         add_submenu_page(
             'gazi-crud',
-            __( 'Edit Data', ' gazi-crud' ),
-            __( 'Edit Data', ' gazi-crud' ),
+            '',
+            '',
             'manage_options',
             'gazi-edit-data',
             [ $this, 'gazi_edit_data' ]
@@ -91,8 +91,7 @@ class Gazi_crud {
 
     /** Enqueue files */
     function gazi_enqueue_file($hook) {
-   
-        if($hook == 'toplevel_page_gazi-crud' || $hook == 'gazi-crud_page_gazi-add-new-data'){
+        if($hook == 'toplevel_page_gazi-crud' || $hook == 'gazi-crud_page_gazi-add-new-data' || $hook == 'gazi-crud_page_gazi-edit-data'){
         wp_enqueue_style('gazi-styles', plugin_dir_url(__FILE__) . 'assets/css/style.css', array(), time(), 'all');
 
         }
@@ -161,6 +160,7 @@ class Gazi_crud {
                 exit;
             }
         }
+
 }
 
 new Gazi_crud();
