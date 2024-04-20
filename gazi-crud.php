@@ -90,16 +90,12 @@ class Gazi_crud {
     }
 
     /** Enqueue files */
-    function gazi_enqueue_file() {
+    function gazi_enqueue_file($hook) {
+   
+        if($hook == 'toplevel_page_gazi-crud' || $hook == 'gazi-crud_page_gazi-add-new-data'){
         wp_enqueue_style('gazi-styles', plugin_dir_url(__FILE__) . 'assets/css/style.css', array(), time(), 'all');
 
- 
-        // if ($hook == 'toplevel_page_gazi-crud' || 'toplevel_page_gazi-add-new-data') {
-        //     wp_enqueue_script('gazi-tailwind', '//cdn.tailwindcss.com', [], '1.0', [
-        //         'in_footer' => true,
-        //         'strategy' => 'defer'
-        //     ]);
-        // }
+        }
     }
 
     /** Main content function */
